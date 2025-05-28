@@ -4,6 +4,9 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+
+// CREACION DE LA BDD
+
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -12,4 +15,120 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+
+// CREACION DE ENTIDADES Y ENUMS
+
+// Entidades
+
+model Categoria {
+  id        Int        @id @default(autoincrement())
+  nombre    String
+  productos Producto[] @relation("ProductoCategorias")
+}
+
+model Descuento {
+  id           Int        @id @default(autoincrement())
+  fechaInicio  DateTime
+  fechaCierre  DateTime
+  descuento    Float
+  productos    Producto[]
+}
+
+model DetalleOrden {
+  id             Int          @id @default(autoincrement())
+  cantidad       Int
+  precioUnitario Float
+  producto       Producto     @relation(fields: [productoId], references: [id])
+  productoId     Int
+  ordenCompra    OrdenCompra  @relation(fields: [ordenCompraId], references: [id])
+  ordenCompraId  Int
+}
+
+model Direccion {
+  id        Int        @id @default(autoincrement())
+  calle     String
+  codpost   Int
+  usuarios  Usuario[]  @relation("UsuarioDirecciones")
+}
+
+model OrdenCompra {
+  id           Int            @id @default(autoincrement())
+  fechaOrden   DateTime       @default(now())
+  montototal   Float
+  mediopago    String
+  detalles     DetalleOrden[]
+  pedido       Pedido         @relation(fields: [pedidoId], references: [id])
+  pedidoId     Int            @unique
+}
+
+model Pedido {
+  id             Int           @id @default(autoincrement())
+  estado         Estado        @default(PENDIENTE)
+  fechacreacion  DateTime
+  items          PedidoItem[]
+  usuario        Usuario       @relation(fields: [usuarioId], references: [id])
+  usuarioId      Int
+  ordenCompra    OrdenCompra?
+}
+
+model PedidoItem {
+  id          Int       @id @default(autoincrement())
+  cantidad    Int
+  producto    Producto  @relation(fields: [productoId], references: [id])
+  productoId  Int
+  pedido      Pedido    @relation(fields: [pedidoId], references: [id])
+  pedidoId    Int
+}
+
+model Producto {
+  id           Int            @id @default(autoincrement())
+  nombre       String
+  descripcion  String
+  precio       Float
+  stock        Int
+  categorias   Categoria[]    @relation("ProductoCategorias")
+  color        String
+  marca        String
+  imagen       String
+  descuento    Descuento      @relation(fields: [descuentoId], references: [id])
+  descuentoId  Int
+  pedidoItems  PedidoItem[]
+  detalleOrden DetalleOrden[] 
+  talles       Talle[]        @relation("ProductoTalles")
+}
+
+
+model Talle {
+  id         Int         @id @default(autoincrement())
+  talle      String      @unique
+  productos  Producto[]  @relation("ProductoTalles")
+}
+
+model Usuario {
+  id           Int         @id @default(autoincrement())
+  nombre       String
+  apellido     String
+  email        String      @unique
+  password     String
+  rol          Rol         @default(USER)
+  direcciones  Direccion[] @relation("UsuarioDirecciones")
+  pedidos      Pedido[]
+}
+
+// Enums
+
+enum Rol {
+  ADMIN
+  USER
+}
+
+enum Estado {
+  PENDIENTE
+  ENPROCESO
+  APROBADO
+  RECHAZADO
+  CANCELADO
+  FALLIDO
 }
