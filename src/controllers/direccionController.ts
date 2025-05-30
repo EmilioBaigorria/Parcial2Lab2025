@@ -33,7 +33,7 @@ export const crearDireccion = async (req: Request, res: Response) => { //--not t
                 calle: calle,
                 codpost: codpost,
                 usuarios: {
-                    connect:usuarios.map.map((id: number) => ({ id }))
+                    connect:usuarios.map((id: number) => ({ id }))
                 }
             }
         })
