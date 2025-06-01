@@ -6,8 +6,8 @@ const talleRouter = express.Router()
 
 talleRouter.get('/', getAllTalle)
 talleRouter.get('/:id', getTallePorId)
-talleRouter.post('/', crearTalle, verifyToken)
-talleRouter.put('/', actualizarTalle, verifyToken)
-talleRouter.delete('/:id',eliminarTallePorId, verifyToken)
+talleRouter.post('/', verifyToken, crearTalle)
+talleRouter.put('/', verifyToken, actualizarTalle)
+talleRouter.delete('/:id', verifyToken, eliminarTallePorId)
 
 export default talleRouter

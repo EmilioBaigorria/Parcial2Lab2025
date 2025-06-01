@@ -6,8 +6,8 @@ const productoRouter = express.Router()
 
 productoRouter.get('/', getAllProductos)
 productoRouter.get('/:id', getProductoPorId)
-productoRouter.post('/', crearProducto, verifyToken)
-productoRouter.put('/', actualizarProducto, verifyToken)
-productoRouter.delete('/:id', eliminarProductoPorId, verifyToken)
+productoRouter.post('/', verifyToken, crearProducto)
+productoRouter.put('/', verifyToken, actualizarProducto)
+productoRouter.delete('/:id', verifyToken, eliminarProductoPorId)
 
 export default productoRouter

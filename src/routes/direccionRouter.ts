@@ -6,8 +6,8 @@ const direccionRouter = express.Router()
 
 direccionRouter.get('/', getAllDireccion)
 direccionRouter.get('/:id', getDireccionPorId)
-direccionRouter.post('/', crearDireccion, verifyToken)
-direccionRouter.put('/', actualizarDireccion, verifyToken)
-direccionRouter.delete('/:id',eliminarDireccionPorId, verifyToken)
+direccionRouter.post('/', verifyToken, crearDireccion)
+direccionRouter.put('/', verifyToken, actualizarDireccion)
+direccionRouter.delete('/:id', verifyToken, eliminarDireccionPorId)
 
 export default direccionRouter

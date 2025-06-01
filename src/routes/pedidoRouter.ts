@@ -6,8 +6,8 @@ const pedidoRouter = express.Router()
 
 pedidoRouter.get('/', getAllPedidos)
 pedidoRouter.get('/:id', getPedidoPorId)
-pedidoRouter.post('/', crearPedido, verifyToken)
-pedidoRouter.put('/', actualizarPedido, verifyToken)
-pedidoRouter.delete('/:id',eliminarPedidoPorId, verifyToken)
+pedidoRouter.post('/', verifyToken, crearPedido)
+pedidoRouter.put('/', verifyToken, actualizarPedido)
+pedidoRouter.delete('/:id', verifyToken, eliminarPedidoPorId)
 
 export default pedidoRouter

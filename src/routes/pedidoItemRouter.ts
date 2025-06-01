@@ -6,8 +6,8 @@ const pedidoItemRouter = express.Router()
 
 pedidoItemRouter.get('/', getAllPedidoItem)
 pedidoItemRouter.get('/:id', getPedidoItemPorId)
-pedidoItemRouter.post('/', crearPedidoItem, verifyToken)
-pedidoItemRouter.put('/', actualizarPedidoItem, verifyToken)
-pedidoItemRouter.delete('/:id',eliminarPedidoItemPorId, verifyToken)
+pedidoItemRouter.post('/', verifyToken, crearPedidoItem)
+pedidoItemRouter.put('/', verifyToken, actualizarPedidoItem)
+pedidoItemRouter.delete('/:id', verifyToken, eliminarPedidoItemPorId)
 
 export default pedidoItemRouter

@@ -6,8 +6,8 @@ const categoriaRouter = express.Router()
 
 categoriaRouter.get('/', getAllCategorias)
 categoriaRouter.get('/:id', getCategoriaPorId)
-categoriaRouter.post('/', crearCategoria, verifyToken)
-categoriaRouter.put('/', actualizarCategoria, verifyToken)
-categoriaRouter.delete('/:id',eliminarCategoriaPorId, verifyToken)
+categoriaRouter.post('/', verifyToken, crearCategoria)
+categoriaRouter.put('/', verifyToken, actualizarCategoria)
+categoriaRouter.delete('/:id', verifyToken, eliminarCategoriaPorId)
 
 export default categoriaRouter
