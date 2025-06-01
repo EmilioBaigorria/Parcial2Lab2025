@@ -1,7 +1,7 @@
-import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { PrismaClient } from "../generated/prisma";
 
 const prisma = new PrismaClient();
 const SECRETO = process.env.CLAVE_JWT || "TeamDinamitaPrueba";
@@ -36,7 +36,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
             res.status(401).json({ msg: "Credenciales invalidas" });
             return;
         }
-
         const valid = await bcrypt.compare(password, user.password);
         if (!valid) {
             res.status(401).json({ msg: "Credenciales invalidas" });

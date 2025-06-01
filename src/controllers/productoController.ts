@@ -43,11 +43,11 @@ export const crearProducto = async (req: Request, res: Response) => { //--not te
                 descuentoId: descuentoId,
                 //Quiza esto este mal, no estoy seguro
                 pedidoItems: {
-                    connect: pedidoItems.map.map((id: number) => ({ id }))
+                    connect: pedidoItems.map((id: number) => ({ id }))
                 }, detalleOrden: {
-                    connect: detalleOrden.map.map((id: number) => ({ id }))
+                    connect: detalleOrden.map((id: number) => ({ id }))
                 }, talles: {
-                    connect: talles.map.map((id: number) => ({ id }))
+                    connect: talles.map((id: number) => ({ id }))
                 },
             }
         })
@@ -68,7 +68,7 @@ export const actualizarProducto = async (req: Request, res: Response) => { //--n
                 precio: precio,
                 stock: stock,
                 categorias: {
-                    connect: categorias.map.map((id: number) => ({ id }))
+                    connect: categorias.map((id: number) => ({ id }))
                 },
                 color: color,
                 marca: marca,
@@ -76,11 +76,11 @@ export const actualizarProducto = async (req: Request, res: Response) => { //--n
                 descuentoId: descuentoId,
                 //Quiza esto este mal, no estoy seguro
                 pedidoItems: {
-                    connect: pedidoItems.map.map((id: number) => ({ id }))
+                    connect: pedidoItems.map((id: number) => ({ id }))
                 }, detalleOrden: {
-                    connect: detalleOrden.map.map((id: number) => ({ id }))
+                    connect: detalleOrden.map((id: number) => ({ id }))
                 }, talles: {
-                    connect: talles.map.map((id: number) => ({ id }))
+                    connect: talles.map((id: number) => ({ id }))
                 },
             }
         })

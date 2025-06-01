@@ -10,12 +10,12 @@ import productoRouter from "./routes/productoRouter"
 import talleRouter from "./routes/talleRouter"
 import ordenCompraRouter from "./routes/ordenCompraRouter"
 import usuarioRouter from "./routes/usuarioRouter"
+import authRouter from "./auth/authService"
 dotenv.config()
 
 const expApp = express()
 
 expApp.use(express.json())
-
 //Rutas
 expApp.use('/categorias', categoriaRouter)
 
@@ -36,5 +36,8 @@ expApp.use('/producto', productoRouter)
 expApp.use('/talle',talleRouter)
 
 expApp.use('/usuario',usuarioRouter)
+
+//Auth
+expApp.use('/auth',authRouter)
 
 export default expApp

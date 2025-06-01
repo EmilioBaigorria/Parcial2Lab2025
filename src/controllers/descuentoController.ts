@@ -3,7 +3,7 @@ import { PrismaClient } from "../generated/prisma";
 
 const prisma = new PrismaClient
 
-export const getAllDescuentos = async (req: Request, res: Response) => { //--not tested
+export const getAllDescuentos = async (req: Request, res: Response) => { 
     try {
         const response = await prisma.descuento.findMany()
         res.status(200).json(response)
@@ -12,7 +12,7 @@ export const getAllDescuentos = async (req: Request, res: Response) => { //--not
         res.status(500).json({ message: "Ocurrio un error durante la obtencion de todos los descuentos" })
     }
 }
-export const getDescuentoPorId = async (req: Request, res: Response) => { //--not tested
+export const getDescuentoPorId = async (req: Request, res: Response) => { 
     try {
         const { id } = req.params
         const descId = parseInt(id, 10)
@@ -25,7 +25,7 @@ export const getDescuentoPorId = async (req: Request, res: Response) => { //--no
         res.status(500).json({ message: "Ocurrio un error durante la obtencion de uno de los descuentos" })
     }
 }
-export const crearDescuento = async (req: Request, res: Response) => { //--not tested
+export const crearDescuento = async (req: Request, res: Response) => { 
     try {
         const { fechaInicio, fechaCierre, descuento, productos } = req.body
         const response = await prisma.descuento.create({
@@ -44,7 +44,7 @@ export const crearDescuento = async (req: Request, res: Response) => { //--not t
         res.status(500).json({ message: "Ocurrio un error durante la creacion de un descuento" })
     }
 }
-export const actualizarDescuento = async (req: Request, res: Response) => { //--not tested
+export const actualizarDescuento = async (req: Request, res: Response) => { 
     try {
         const { id,fechaInicio, fechaCierre, descuento, productos } = req.body
         const response = await prisma.descuento.update({
@@ -64,7 +64,7 @@ export const actualizarDescuento = async (req: Request, res: Response) => { //--
         res.status(500).json({ message: "Ocurrio un error actualizacion la creacion de un descuento" })
     }
 }
-export const eliminarDescuento = async (req: Request, res: Response) => { //--not tested
+export const eliminarDescuento = async (req: Request, res: Response) => { 
     try {
         const { id } = req.params
         const descId = parseInt(id, 10)
