@@ -6,8 +6,8 @@ const ordenCompraRouter = express.Router()
 
 ordenCompraRouter.get('/', getAllOrdenCompra)
 ordenCompraRouter.get('/:id', getOrdenCompraPorId)
-ordenCompraRouter.post('/', crearOrdenCompra, verifyToken)
-ordenCompraRouter.put('/', actualizarOrdenCompra, verifyToken)
-ordenCompraRouter.delete('/:id',eliminarOrdenCompraPorId, verifyToken)
+ordenCompraRouter.post('/', verifyToken, crearOrdenCompra)
+ordenCompraRouter.put('/', verifyToken, actualizarOrdenCompra)
+ordenCompraRouter.delete('/:id', verifyToken, eliminarOrdenCompraPorId)
 
 export default ordenCompraRouter

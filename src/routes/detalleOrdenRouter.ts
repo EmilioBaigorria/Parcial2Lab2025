@@ -6,8 +6,8 @@ const detalleOrdenRouter = express.Router()
 
 detalleOrdenRouter.get('/', getAllDetalleOrden)
 detalleOrdenRouter.get('/:id', getDetalleOrdenPorId)
-detalleOrdenRouter.post('/', crearDetalleOrden, verifyToken)
-detalleOrdenRouter.put('/', actualizarDetalleOrden, verifyToken)
-detalleOrdenRouter.delete('/:id',eliminarDetalleOrdenPorId, verifyToken)
+detalleOrdenRouter.post('/', verifyToken, crearDetalleOrden)
+detalleOrdenRouter.put('/', verifyToken, actualizarDetalleOrden)
+detalleOrdenRouter.delete('/:id', verifyToken, eliminarDetalleOrdenPorId)
 
 export default detalleOrdenRouter
