@@ -17,7 +17,9 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
             throw new Error("La clave JWT no está definida en las variables de entorno.");
         }
         const decoded = jwt.verify(token, SECRETO);
-        req.body.user = decoded;
+        // if(req.body.user){
+        //     req.body.user = decoded;
+        // }
         next();
     } catch (err) {
         console.log("Ocurrio un error durante la aturorizacion: ",err)
