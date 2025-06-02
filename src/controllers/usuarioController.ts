@@ -5,7 +5,20 @@ const prisma = new PrismaClient
 
 export const getAllUsuarios = async (req: Request, res: Response) => {
     try {
-        const response = await prisma.usuario.findMany()
+        const response = await prisma.usuario.findMany({
+            include: {
+                direcciones: {
+                    select: {
+                        id: true
+                    }
+                },
+                pedidos:{
+                    select:{
+                        id:true
+                    }
+                }
+            }
+        })
         res.status(200).json(response)
     } catch (error) {
         console.log("Ocurrio un error durante la obtencion de todos los usuarios: ", error)
@@ -17,7 +30,19 @@ export const getUsuarioPorId = async (req: Request, res: Response) => {
         const { id } = req.params
         const usuarioId = parseInt(id, 10)
         const response = await prisma.usuario.findUnique({
-            where: { id: usuarioId }
+            where: { id: usuarioId },
+            include: {
+                direcciones: {
+                    select: {
+                        id: true
+                    }
+                },
+                pedidos:{
+                    select:{
+                        id:true
+                    }
+                }
+            }
         })
         res.status(200).json(response)
     } catch (error) {

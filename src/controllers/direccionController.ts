@@ -25,7 +25,14 @@ export const getDireccionPorId = async (req: Request, res: Response) => {
         const { id } = req.params
         const direcId = parseInt(id, 10)
         const response = await prisma.direccion.findUnique({
-            where: { id: direcId }
+            where: { id: direcId },
+            include: {
+                usuarios: {
+                    select: {
+                        id: true
+                    }
+                }
+            }
         })
         res.status(200).json(response)
     } catch (error) {

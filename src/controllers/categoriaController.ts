@@ -6,7 +6,15 @@ const prisma = new PrismaClient()
 
 export const getAllCategorias = async (req: Request, res: Response) => {
     try {
-        const response = await prisma.categoria.findMany()
+        const response = await prisma.categoria.findMany({
+            include: {
+                productos: {
+                    select: {
+                        id: true
+                    }
+                }
+            }
+        })
         res.status(200).json(response)
     } catch (error) {
         console.log("Ocurrio un error durante la obtencion de todas las categorias: ", error)
@@ -18,7 +26,14 @@ export const getCategoriaPorId = async (req: Request, res: Response) => {
         const { id } = req.params
         const cateid = parseInt(id, 10)
         const response = await prisma.categoria.findUnique({
-            where: { id: cateid }
+            where: { id: cateid },
+            include: {
+                productos: {
+                    select: {
+                        id: true
+                    }
+                }
+            }
         })
         res.status(200).json(response)
     } catch (error) {
@@ -45,7 +60,7 @@ export const crearCategoria = async (req: Request, res: Response) => {
 }
 export const actualizarCategoria = async (req: Request, res: Response) => {
     try {
-        const { id,nombre, productos } = req.body
+        const { id, nombre, productos } = req.body
         const response = await prisma.categoria.update({
             where: { id: id },
             data: {

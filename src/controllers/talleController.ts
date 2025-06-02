@@ -5,7 +5,15 @@ const prisma = new PrismaClient
 
 export const getAllTalle = async (req: Request, res: Response) => {
     try {
-        const response = await prisma.talle.findMany()
+        const response = await prisma.talle.findMany({
+            include: {
+                productos: {
+                    select: {
+                        id: true
+                    }
+                },
+            }
+        })
         res.status(200).json(response)
     } catch (error) {
         console.log("Ocurrio un error durante la obtencion de todos los talles: ", error)
@@ -17,7 +25,14 @@ export const getTallePorId = async (req: Request, res: Response) => {
         const { id } = req.params
         const talleId = parseInt(id, 10)
         const response = await prisma.talle.findUnique({
-            where: { id: talleId }
+            where: { id: talleId },
+            include: {
+                productos: {
+                    select: {
+                        id: true
+                    }
+                },
+            }
         })
         res.status(200).json(response)
     } catch (error) {

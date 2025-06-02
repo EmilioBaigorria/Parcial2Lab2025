@@ -5,7 +5,15 @@ const prisma = new PrismaClient
 
 export const getAllProductos = async (req: Request, res: Response) => { //--not tested
     try {
-        const response = await prisma.producto.findMany()
+        const response = await prisma.producto.findMany({
+            include: {
+                categorias: {
+                    select: {
+                        id: true
+                    }
+                }
+            }
+        })
         res.status(200).json(response)
     } catch (error) {
         console.log("Ocurrio un error durante la obtencion de todos los productos: ", error)
@@ -17,7 +25,14 @@ export const getProductoPorId = async (req: Request, res: Response) => { //--not
         const { id } = req.params
         const produId = parseInt(id, 10)
         const response = await prisma.producto.findUnique({
-            where: { id: produId }
+            where: { id: produId },
+            include: {
+                categorias: {
+                    select: {
+                        id: true
+                    }
+                }
+            }
         })
         res.status(200).json(response)
     } catch (error) {

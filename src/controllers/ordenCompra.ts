@@ -5,7 +5,15 @@ const prisma = new PrismaClient
 
 export const getAllOrdenCompra = async (req: Request, res: Response) => {
     try {
-        const response = await prisma.ordenCompra.findMany()
+        const response = await prisma.ordenCompra.findMany({
+            include: {
+                detalles: {
+                    select: {
+                        id: true
+                    }
+                }
+            }
+        })
         res.status(200).json(response)
     } catch (error) {
         console.log("Ocurrio un error durante la obtencion de todas las Ordenes de compra: ", error)
@@ -17,7 +25,14 @@ export const getOrdenCompraPorId = async (req: Request, res: Response) => {
         const { id } = req.params
         const OCId = parseInt(id, 10)
         const response = await prisma.ordenCompra.findUnique({
-            where: { id: OCId }
+            where: { id: OCId },
+            include: {
+                detalles: {
+                    select: {
+                        id: true
+                    }
+                }
+            }
         })
         res.status(200).json(response)
     } catch (error) {

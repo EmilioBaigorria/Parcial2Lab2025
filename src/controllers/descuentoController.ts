@@ -3,21 +3,36 @@ import { PrismaClient } from "../generated/prisma";
 
 const prisma = new PrismaClient
 
-export const getAllDescuentos = async (req: Request, res: Response) => { 
+export const getAllDescuentos = async (req: Request, res: Response) => {
     try {
-        const response = await prisma.descuento.findMany()
+        const response = await prisma.descuento.findMany({
+            include: {
+                productos: {
+                    select: {
+                        id: true
+                    }
+                }
+            }
+        })
         res.status(200).json(response)
     } catch (error) {
         console.log("Ocurrio un error durante la obtencion de todos los descuentos: ", error)
         res.status(500).json({ message: "Ocurrio un error durante la obtencion de todos los descuentos" })
     }
 }
-export const getDescuentoPorId = async (req: Request, res: Response) => { 
+export const getDescuentoPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const descId = parseInt(id, 10)
         const response = await prisma.descuento.findUnique({
-            where: { id: descId }
+            where: { id: descId },
+            include: {
+                productos: {
+                    select: {
+                        id: true
+                    }
+                }
+            }
         })
         res.status(200).json(response)
     } catch (error) {
@@ -25,7 +40,7 @@ export const getDescuentoPorId = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Ocurrio un error durante la obtencion de uno de los descuentos" })
     }
 }
-export const crearDescuento = async (req: Request, res: Response) => { 
+export const crearDescuento = async (req: Request, res: Response) => {
     try {
         const { fechaInicio, fechaCierre, descuento, productos } = req.body
         const response = await prisma.descuento.create({
@@ -44,9 +59,9 @@ export const crearDescuento = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Ocurrio un error durante la creacion de un descuento" })
     }
 }
-export const actualizarDescuento = async (req: Request, res: Response) => { 
+export const actualizarDescuento = async (req: Request, res: Response) => {
     try {
-        const { id,fechaInicio, fechaCierre, descuento, productos } = req.body
+        const { id, fechaInicio, fechaCierre, descuento, productos } = req.body
         const response = await prisma.descuento.update({
             where: { id: id },
             data: {
@@ -64,7 +79,7 @@ export const actualizarDescuento = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Ocurrio un error actualizacion la creacion de un descuento" })
     }
 }
-export const eliminarDescuento = async (req: Request, res: Response) => { 
+export const eliminarDescuento = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const descId = parseInt(id, 10)
