@@ -35,7 +35,9 @@ export const crearOrdenCompra= async (req: Request, res: Response) => { //--not 
                 detalles: {
                     connect: detalles.map((id: number) => ({ id }))
                 },
-                pedidoId:pedidoId
+                pedido: {
+                    connect: { id: pedidoId }
+                }
             }
         })
         res.status(200).json(response)

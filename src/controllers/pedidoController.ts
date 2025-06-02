@@ -35,8 +35,10 @@ export const crearPedido = async (req: Request, res: Response) => { //--not test
                 items: {
                     connect: items.map((id: number) => ({ id }))
                 },
-                usuarioId: usuarioId,
-                ordenCompra: ordenCompra ? ordenCompra : null
+                usuario: {
+                    connect: { id: usuarioId }
+                },
+                ordenCompra: ordenCompra 
             }
         })
         res.status(200).json(response)

@@ -32,8 +32,12 @@ export const crearDetalleOrden = async (req: Request, res: Response) => { //--no
             data: {
                 cantidad: cantidad,
                 precioUnitario: precioUnitario,
-                productoId: productoId,
-                ordenCompraId: ordenCompraId
+                producto: {
+                    connect: { id: productoId }
+                },
+                ordenCompra: {
+                    connect: { id: ordenCompraId }
+                }
             }
         })
         res.status(200).json(response)
@@ -50,8 +54,12 @@ export const actualizarDetalleOrden = async (req: Request, res: Response) => { /
             data: {
                 cantidad: cantidad,
                 precioUnitario: precioUnitario,
-                productoId: productoId,
-                ordenCompraId: ordenCompraId
+                producto: {
+                    connect: { id: productoId }
+                },
+                ordenCompra: {
+                    connect: { id: ordenCompraId }
+                }
             }
         })
         res.status(200).json(response)
