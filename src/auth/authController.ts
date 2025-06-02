@@ -32,8 +32,12 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
     try {
         const user = await prisma.usuario.findUnique({ where: { email } });
+        if (user?.estado == "INACTIVO") {
+            res.status(401).json({ msg: "El usuario proporcionado esta inactivo" });
+            return;
+        }
         if (!user) {
-            res.status(401).json({ msg: "Credenciales invalidas" });
+            res.status(401).json({ msg: "El usuario proporcionado no existe" });
             return;
         }
         const valid = await bcrypt.compare(password, user.password);

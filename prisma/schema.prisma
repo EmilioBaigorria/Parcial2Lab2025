@@ -113,6 +113,7 @@ model Usuario {
   email        String      @unique
   password     String
   rol          Rol         @default(USER)
+  estado       UserState   @default(ACTIVO)
   direcciones  Direccion[] @relation("UsuarioDirecciones")
   pedidos      Pedido[]
 }
@@ -122,6 +123,10 @@ model Usuario {
 enum Rol {
   ADMIN
   USER
+}
+enum UserState{
+  ACTIVO
+  INACTIVO
 }
 
 enum Estado {

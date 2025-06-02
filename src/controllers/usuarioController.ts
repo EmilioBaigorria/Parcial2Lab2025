@@ -12,9 +12,9 @@ export const getAllUsuarios = async (req: Request, res: Response) => {
                         id: true
                     }
                 },
-                pedidos:{
-                    select:{
-                        id:true
+                pedidos: {
+                    select: {
+                        id: true
                     }
                 }
             }
@@ -37,9 +37,9 @@ export const getUsuarioPorId = async (req: Request, res: Response) => {
                         id: true
                     }
                 },
-                pedidos:{
-                    select:{
-                        id:true
+                pedidos: {
+                    select: {
+                        id: true
                     }
                 }
             }
@@ -76,7 +76,7 @@ export const crearUsuario = async (req: Request, res: Response) => {
 }
 export const actualizarUsuario = async (req: Request, res: Response) => {
     try {
-        const { id, nombre, apellido, email, password, rol, direcciones, pedidos } = req.body
+        const { id, nombre, apellido, email, password, rol, estado, direcciones, pedidos } = req.body
         const response = await prisma.usuario.update({
             where: { id: id },
             data: {
@@ -85,6 +85,7 @@ export const actualizarUsuario = async (req: Request, res: Response) => {
                 email: email,
                 password: password,
                 rol: rol,
+                estado: estado,
                 direcciones: {
                     connect: direcciones.map((id: number) => ({ id }))
                 },
@@ -103,8 +104,9 @@ export const eliminarUsuarioPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const usuarioId = parseInt(id, 10)
-        const response = await prisma.usuario.delete({
+        const response = await prisma.usuario.update({
             where: { id: usuarioId },
+            data: { estado: "INACTIVO" }
         })
         res.status(200).json(response)
     } catch (error) {
