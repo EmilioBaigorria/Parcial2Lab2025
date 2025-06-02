@@ -3,7 +3,7 @@ import { PrismaClient } from "../generated/prisma";
 
 const prisma = new PrismaClient
 
-export const getAllDetalleOrden = async (req: Request, res: Response) => { //--not tested
+export const getAllDetalleOrden = async (req: Request, res: Response) => {
     try {
         const response = await prisma.detalleOrden.findMany()
         res.status(200).json(response)
@@ -12,7 +12,7 @@ export const getAllDetalleOrden = async (req: Request, res: Response) => { //--n
         res.status(500).json({ message: "Ocurrio un error durante la obtencion de todos los detalleOrden" })
     }
 }
-export const getDetalleOrdenPorId = async (req: Request, res: Response) => { //--not tested
+export const getDetalleOrdenPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const doId = parseInt(id, 10)
@@ -25,7 +25,7 @@ export const getDetalleOrdenPorId = async (req: Request, res: Response) => { //-
         res.status(500).json({ message: "Ocurrio un error durante la obtencion de uno de los detalleOrden" })
     }
 }
-export const crearDetalleOrden = async (req: Request, res: Response) => { //--not tested
+export const crearDetalleOrden = async (req: Request, res: Response) => {
     try {
         const { cantidad, precioUnitario, productoId, ordenCompraId } = req.body
         const response = await prisma.detalleOrden.create({
@@ -46,7 +46,7 @@ export const crearDetalleOrden = async (req: Request, res: Response) => { //--no
         res.status(500).json({ message: "Ocurrio un error durante la creacion de un detalleOrden" })
     }
 }
-export const actualizarDetalleOrden = async (req: Request, res: Response) => { //--not tested
+export const actualizarDetalleOrden = async (req: Request, res: Response) => {
     try {
         const { id, cantidad, precioUnitario, productoId, ordenCompraId } = req.body
         const response = await prisma.detalleOrden.update({

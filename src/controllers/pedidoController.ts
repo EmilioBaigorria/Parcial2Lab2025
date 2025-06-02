@@ -25,49 +25,91 @@ export const getPedidoPorId = async (req: Request, res: Response) => { //--not t
         res.status(500).json({ message: "Ocurrio un error durante la obtencion de un pedio" })
     }
 }
-export const crearPedido = async (req: Request, res: Response) => { //--not tested
+export const crearPedido = async (req: Request, res: Response) => {
     try {
-        const { estado, fechacreacion, items, usuarioId, ordenCompra } = req.body
+        const { estado, fechacreacion, items, usuarioId, ordenCompra } = req.body;
+
+        const data = {
+            estado,
+            fechacreacion: new Date(fechacreacion),
+            items: {
+                connect: items.map((id: number) => ({ id }))
+            },
+            usuario: {
+                connect: { id: usuarioId }
+            },
+            ...(ordenCompra && { ordenCompra: { connect: { id: ordenCompra } } })
+        };
+
         const response = await prisma.pedido.create({
-            data: {
-                estado: estado,
-                fechacreacion: fechacreacion,
-                items: {
-                    connect: items.map((id: number) => ({ id }))
-                },
-                usuario: {
-                    connect: { id: usuarioId }
-                },
-                ordenCompra: ordenCompra 
+            data,
+            include: {
+                items: true,
+                usuario: true,
+                ordenCompra: true
             }
-        })
-        res.status(200).json(response)
+        });
+
+        res.status(201).json(response);
+
     } catch (error) {
-        console.log("Ocurrio un error durante la creacion de un pedido: ", error)
-        res.status(500).json({ message: "Ocurrio un error durante la creacion de un pedido" })
+        console.error(error);
+        
+        if (error === 'P2025') {
+            res.status(404).json({ 
+                message: "Uno de los IDs proporcionados no existe",
+                details: error 
+            });
+        } else {
+            res.status(500).json({ 
+                message: "Error al crear pedido",
+                error: error 
+            });
+        }
     }
-}
-export const actualizarPedido = async (req: Request, res: Response) => { //--not tested
+};
+export const actualizarPedido = async (req: Request, res: Response) => {
     try {
-        const { id, estado, fechacreacion, items, usuarioId, ordenCompra } = req.body
+        const { id, estado, fechacreacion, items, usuarioId, ordenCompra } = req.body;
+
+        const data = {
+            ...(estado && { estado }),
+            ...(fechacreacion && { fechacreacion: new Date(fechacreacion) }),
+            ...(items && { items: { connect: items.map((id: number) => ({ id })) } }),
+            ...(usuarioId && { usuario: { connect: { id: usuarioId } } }),
+            ...(ordenCompra !== undefined ? { 
+                ordenCompra: ordenCompra ? { connect: { id: ordenCompra } } : { disconnect: true } 
+            } : {})
+        };
+
         const response = await prisma.pedido.update({
-            where: { id: id },
-            data: {
-                estado: estado,
-                fechacreacion: fechacreacion,
-                items: {
-                    connect: items.map.map((id: number) => ({ id }))
-                },
-                usuarioId: usuarioId,
-                ordenCompra: ordenCompra
+            where: { id: Number(id) },
+            data,
+            include: {
+                items: true,
+                usuario: true,
+                ordenCompra: true
             }
-        })
-        res.status(200).json(response)
+        });
+
+        res.status(200).json(response);
+
     } catch (error) {
-        console.log("Ocurrio un error durante la actualizacion de un pedido: ", error)
-        res.status(500).json({ message: "Ocurrio un error durante la actualizacion de un pedido" })
+        console.error(error);
+        
+        if (error === 'P2025') {
+            res.status(404).json({ 
+                message: "ID no encontrado",
+                details: error 
+            });
+        } else {
+            res.status(500).json({ 
+                message: "Error al actualizar pedido",
+                error: error 
+            });
+        }
     }
-}
+};
 export const eliminarPedidoPorId = async (req: Request, res: Response) => { //--not tested
     try {
         const { id } = req.params

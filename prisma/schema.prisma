@@ -42,8 +42,8 @@ model DetalleOrden {
   precioUnitario Float
   producto       Producto     @relation(fields: [productoId], references: [id])
   productoId     Int
-  ordenCompra    OrdenCompra  @relation(fields: [ordenCompraId], references: [id])
-  ordenCompraId  Int
+  ordenCompra    OrdenCompra? @relation(fields: [ordenCompraId], references: [id])
+  ordenCompraId  Int?
 }
 
 model Direccion {
@@ -59,8 +59,8 @@ model OrdenCompra {
   montototal   Float
   mediopago    String
   detalles     DetalleOrden[]
-  pedido       Pedido         @relation(fields: [pedidoId], references: [id])
-  pedidoId     Int            @unique
+  pedido       Pedido?        @relation(fields: [pedidoId], references: [id])
+  pedidoId     Int?           @unique
 }
 
 model Pedido {
@@ -78,8 +78,8 @@ model PedidoItem {
   cantidad    Int
   producto    Producto  @relation(fields: [productoId], references: [id])
   productoId  Int
-  pedido      Pedido    @relation(fields: [pedidoId], references: [id])
-  pedidoId    Int
+  pedido      Pedido?   @relation(fields: [pedidoId], references: [id])
+  pedidoId    Int?
 }
 
 model Producto {

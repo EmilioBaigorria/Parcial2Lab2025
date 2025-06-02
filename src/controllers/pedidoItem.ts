@@ -25,22 +25,26 @@ export const getPedidoItemPorId = async (req: Request, res: Response) => { //--n
         res.status(500).json({ message: "Ocurrio un error durante la obtencion de un pedidoItem" })
     }
 }
-export const crearPedidoItem = async (req: Request, res: Response) => { //--not tested
+export const crearPedidoItem = async (req: Request, res: Response) => {
     try {
-        const { cantidad, productoId, pedidoId } = req.body
-        const response = await prisma.pedidoItem.create({
-            data: {
-                cantidad: cantidad,
-                productoId: productoId,
-                pedidoId: pedidoId
-            }
-        })
-        res.status(200).json(response)
+        const { cantidad, productoId, pedidoId } = req.body;
+
+        const data = {
+            cantidad,
+            producto: { connect: { id: productoId } },
+            ...(pedidoId && { pedido: { connect: { id: pedidoId } } })
+        };
+
+        const response = await prisma.pedidoItem.create({ data });
+        res.status(201).json(response);
+
     } catch (error) {
-        console.log("Ocurrio un error durante la creacion de un pedidoItem: ", error)
-        res.status(500).json({ message: "Ocurrio un error durante la creacion de un pedidoItem" })
+        res.status(500).json({ 
+            message: "Error al crear pedidoItem",
+            error: error
+        });
     }
-}
+};
 export const actualizarPedidoItem = async (req: Request, res: Response) => { //--not tested
     try {
         const { id, cantidad, productoId, pedidoId } = req.body

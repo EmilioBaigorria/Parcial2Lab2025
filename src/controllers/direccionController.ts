@@ -3,16 +3,24 @@ import { PrismaClient } from "../generated/prisma";
 
 const prisma = new PrismaClient
 
-export const getAllDireccion = async (req: Request, res: Response) => { //--not tested
+export const getAllDireccion = async (req: Request, res: Response) => {
     try {
-        const response = await prisma.direccion.findMany()
+        const response = await prisma.direccion.findMany({
+            include: {
+                usuarios: {
+                    select: {
+                        id: true
+                    }
+                }
+            }
+        })
         res.status(200).json(response)
     } catch (error) {
         console.log("Ocurrio un error durante la obtencion de todas las direcciones: ", error)
         res.status(500).json({ message: "Ocurrio un error durante la obtencion de todas las direcciones" })
     }
 }
-export const getDireccionPorId = async (req: Request, res: Response) => { //--not tested
+export const getDireccionPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const direcId = parseInt(id, 10)
@@ -25,7 +33,7 @@ export const getDireccionPorId = async (req: Request, res: Response) => { //--no
         res.status(500).json({ message: "Ocurrio un error durante la obtencion de una de las direcciones" })
     }
 }
-export const crearDireccion = async (req: Request, res: Response) => { //--not tested
+export const crearDireccion = async (req: Request, res: Response) => {
     try {
         const { calle, codpost, usuarios } = req.body
         const response = await prisma.direccion.create({
@@ -33,7 +41,7 @@ export const crearDireccion = async (req: Request, res: Response) => { //--not t
                 calle: calle,
                 codpost: codpost,
                 usuarios: {
-                    connect:usuarios.map((id: number) => ({ id }))
+                    connect: usuarios.map((id: number) => ({ id }))
                 }
             }
         })
@@ -43,16 +51,16 @@ export const crearDireccion = async (req: Request, res: Response) => { //--not t
         res.status(500).json({ message: "Ocurrio un error durante la creacion de un direccion" })
     }
 }
-export const actualizarDireccion = async (req: Request, res: Response) => { //--not tested
+export const actualizarDireccion = async (req: Request, res: Response) => {
     try {
-        const { id,calle, codpost, usuarios } = req.body
+        const { id, calle, codpost, usuarios } = req.body
         const response = await prisma.direccion.update({
             where: { id: id },
             data: {
                 calle: calle,
                 codpost: codpost,
                 usuarios: {
-                    connect:usuarios.map.map((id: number) => ({ id }))
+                    connect: usuarios.map((id: number) => ({ id }))
                 }
             }
         })

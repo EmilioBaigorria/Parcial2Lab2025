@@ -25,30 +25,38 @@ export const getOrdenCompraPorId = async (req: Request, res: Response) => { //--
         res.status(500).json({ message: "Ocurrio un error durante la obtencion de una de las ordenes de compra" })
     }
 }
-export const crearOrdenCompra= async (req: Request, res: Response) => { //--not tested
+export const crearOrdenCompra = async (req: Request, res: Response) => {
     try {
-        const { montototal, mediopago, detalles,pedidoId } = req.body
-        const response = await prisma.ordenCompra.create({
-            data: {
-                montototal: montototal,
-                mediopago: "MercadoPago",
-                detalles: {
-                    connect: detalles.map((id: number) => ({ id }))
-                },
-                pedido: {
-                    connect: { id: pedidoId }
-                }
+        const { montototal, mediopago, detalles, pedidoId } = req.body;
+
+        // Estructura base obligatoria
+        const data: any = {
+            montototal,
+            mediopago: mediopago || "MercadoPago", // Valor por defecto
+            detalles: {
+                connect: detalles.map((id: number) => ({ id }))
             }
-        })
-        res.status(200).json(response)
+        };
+
+        // Conexión opcional con pedido
+        if (pedidoId) {
+            data.pedido = { connect: { id: pedidoId } };
+        }
+
+        const response = await prisma.ordenCompra.create({ data });
+        res.status(200).json(response);
+
     } catch (error) {
-        console.log("Ocurrio un error durante la creacion de una orden de compra: ", error)
-        res.status(500).json({ message: "Ocurrio un error durante la creacion de una orden de compra" })
+        console.error("Error al crear orden de compra:", error);
+        res.status(500).json({
+            message: "Error al crear orden de compra",
+            error: error// Muestra el error real
+        });
     }
-}
+};
 export const actualizarOrdenCompra = async (req: Request, res: Response) => { //--not tested
     try {
-        const { id,montototal, mediopago, detalles,pedidoId } = req.body
+        const { id, montototal, mediopago, detalles, pedidoId } = req.body
         const response = await prisma.ordenCompra.update({
             where: { id: id },
             data: {
@@ -57,7 +65,7 @@ export const actualizarOrdenCompra = async (req: Request, res: Response) => { //
                 detalles: {
                     connect: detalles.map((id: number) => ({ id }))
                 },
-                pedidoId:pedidoId
+                pedidoId: pedidoId
             }
         })
         res.status(200).json(response)
