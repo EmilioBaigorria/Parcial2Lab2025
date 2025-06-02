@@ -40,9 +40,9 @@ model DetalleOrden {
   id             Int          @id @default(autoincrement())
   cantidad       Int
   precioUnitario Float
-  producto       Producto     @relation(fields: [productoId], references: [id])
+  producto       Producto     @relation(fields: [productoId], references: [id], onDelete: Cascade)
   productoId     Int
-  ordenCompra    OrdenCompra? @relation(fields: [ordenCompraId], references: [id])
+  ordenCompra    OrdenCompra? @relation(fields: [ordenCompraId], references: [id], onDelete: Cascade)
   ordenCompraId  Int?
 }
 
@@ -59,7 +59,7 @@ model OrdenCompra {
   montototal   Float
   mediopago    String
   detalles     DetalleOrden[]
-  pedido       Pedido?        @relation(fields: [pedidoId], references: [id])
+  pedido       Pedido?        @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
   pedidoId     Int?           @unique
 }
 
@@ -68,7 +68,7 @@ model Pedido {
   estado         Estado        @default(PENDIENTE)
   fechacreacion  DateTime
   items          PedidoItem[]
-  usuario        Usuario       @relation(fields: [usuarioId], references: [id])
+  usuario        Usuario       @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
   usuarioId      Int
   ordenCompra    OrdenCompra?
 }
@@ -76,9 +76,9 @@ model Pedido {
 model PedidoItem {
   id          Int       @id @default(autoincrement())
   cantidad    Int
-  producto    Producto  @relation(fields: [productoId], references: [id])
+  producto    Producto  @relation(fields: [productoId], references: [id], onDelete: Cascade)
   productoId  Int
-  pedido      Pedido?   @relation(fields: [pedidoId], references: [id])
+  pedido      Pedido?   @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
   pedidoId    Int?
 }
 
@@ -92,7 +92,7 @@ model Producto {
   color        String
   marca        String
   imagen       String
-  descuento    Descuento      @relation(fields: [descuentoId], references: [id])
+  descuento    Descuento      @relation(fields: [descuentoId], references: [id], onDelete: Cascade)
   descuentoId  Int
   pedidoItems  PedidoItem[]
   detalleOrden DetalleOrden[] 
