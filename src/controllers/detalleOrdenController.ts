@@ -5,7 +5,12 @@ const prisma = new PrismaClient
 
 export const getAllDetalleOrden = async (req: Request, res: Response) => {
     try {
-        const response = await prisma.detalleOrden.findMany()
+        const response = await prisma.detalleOrden.findMany({
+            include: {
+                producto: true,
+                ordenCompra: true
+            }
+        })
         res.status(200).json(response)
     } catch (error) {
         console.log("Ocurrio un error durante la obtencion de todos los detalleOrden: ", error)
@@ -17,7 +22,11 @@ export const getDetalleOrdenPorId = async (req: Request, res: Response) => {
         const { id } = req.params
         const doId = parseInt(id, 10)
         const response = await prisma.detalleOrden.findUnique({
-            where: { id: doId }
+            where: { id: doId },
+            include: {
+                producto: true,
+                ordenCompra: true
+            }
         })
         res.status(200).json(response)
     } catch (error) {

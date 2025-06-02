@@ -8,11 +8,7 @@ export const getAllCategorias = async (req: Request, res: Response) => {
     try {
         const response = await prisma.categoria.findMany({
             include: {
-                productos: {
-                    select: {
-                        id: true
-                    }
-                }
+                productos: true
             }
         })
         res.status(200).json(response)
@@ -28,11 +24,7 @@ export const getCategoriaPorId = async (req: Request, res: Response) => {
         const response = await prisma.categoria.findUnique({
             where: { id: cateid },
             include: {
-                productos: {
-                    select: {
-                        id: true
-                    }
-                }
+                productos: true
             }
         })
         res.status(200).json(response)

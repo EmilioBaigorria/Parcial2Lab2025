@@ -7,11 +7,7 @@ export const getAllOrdenCompra = async (req: Request, res: Response) => {
     try {
         const response = await prisma.ordenCompra.findMany({
             include: {
-                detalles: {
-                    select: {
-                        id: true
-                    }
-                }
+                detalles: true
             }
         })
         res.status(200).json(response)
@@ -27,11 +23,7 @@ export const getOrdenCompraPorId = async (req: Request, res: Response) => {
         const response = await prisma.ordenCompra.findUnique({
             where: { id: OCId },
             include: {
-                detalles: {
-                    select: {
-                        id: true
-                    }
-                }
+                detalles: true
             }
         })
         res.status(200).json(response)

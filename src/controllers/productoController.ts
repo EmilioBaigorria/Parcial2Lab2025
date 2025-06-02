@@ -7,11 +7,7 @@ export const getAllProductos = async (req: Request, res: Response) => { //--not 
     try {
         const response = await prisma.producto.findMany({
             include: {
-                categorias: {
-                    select: {
-                        id: true
-                    }
-                }
+                categorias: true
             }
         })
         res.status(200).json(response)
@@ -27,11 +23,7 @@ export const getProductoPorId = async (req: Request, res: Response) => { //--not
         const response = await prisma.producto.findUnique({
             where: { id: produId },
             include: {
-                categorias: {
-                    select: {
-                        id: true
-                    }
-                }
+                categorias: true
             }
         })
         res.status(200).json(response)

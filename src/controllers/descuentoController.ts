@@ -7,11 +7,7 @@ export const getAllDescuentos = async (req: Request, res: Response) => {
     try {
         const response = await prisma.descuento.findMany({
             include: {
-                productos: {
-                    select: {
-                        id: true
-                    }
-                }
+                productos: true
             }
         })
         res.status(200).json(response)
@@ -27,11 +23,7 @@ export const getDescuentoPorId = async (req: Request, res: Response) => {
         const response = await prisma.descuento.findUnique({
             where: { id: descId },
             include: {
-                productos: {
-                    select: {
-                        id: true
-                    }
-                }
+                productos: true
             }
         })
         res.status(200).json(response)

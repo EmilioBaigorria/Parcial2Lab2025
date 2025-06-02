@@ -7,16 +7,8 @@ export const getAllPedidos = async (req: Request, res: Response) => {
     try {
         const response = await prisma.pedido.findMany({
             include: {
-                items: {
-                    select: {
-                        id: true
-                    }
-                },
-                ordenCompra:{
-                    select:{
-                        id:true
-                    }
-                }
+                items: true,
+                ordenCompra: true
             }
         })
         res.status(200).json(response)
@@ -32,16 +24,8 @@ export const getPedidoPorId = async (req: Request, res: Response) => {
         const response = await prisma.pedido.findUnique({
             where: { id: pediId },
             include: {
-                items: {
-                    select: {
-                        id: true
-                    }
-                },
-                ordenCompra:{
-                    select:{
-                        id:true
-                    }
-                }
+                items: true,
+                ordenCompra: true
             }
         })
         res.status(200).json(response)

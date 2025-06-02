@@ -7,11 +7,7 @@ export const getAllTalle = async (req: Request, res: Response) => {
     try {
         const response = await prisma.talle.findMany({
             include: {
-                productos: {
-                    select: {
-                        id: true
-                    }
-                },
+                productos: true
             }
         })
         res.status(200).json(response)
@@ -27,11 +23,7 @@ export const getTallePorId = async (req: Request, res: Response) => {
         const response = await prisma.talle.findUnique({
             where: { id: talleId },
             include: {
-                productos: {
-                    select: {
-                        id: true
-                    }
-                },
+                productos: true
             }
         })
         res.status(200).json(response)

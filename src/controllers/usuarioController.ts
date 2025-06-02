@@ -7,16 +7,8 @@ export const getAllUsuarios = async (req: Request, res: Response) => {
     try {
         const response = await prisma.usuario.findMany({
             include: {
-                direcciones: {
-                    select: {
-                        id: true
-                    }
-                },
-                pedidos:{
-                    select:{
-                        id:true
-                    }
-                }
+                direcciones: true,
+                pedidos: true
             }
         })
         res.status(200).json(response)
@@ -32,16 +24,8 @@ export const getUsuarioPorId = async (req: Request, res: Response) => {
         const response = await prisma.usuario.findUnique({
             where: { id: usuarioId },
             include: {
-                direcciones: {
-                    select: {
-                        id: true
-                    }
-                },
-                pedidos:{
-                    select:{
-                        id:true
-                    }
-                }
+                direcciones: true,
+                pedidos: true
             }
         })
         res.status(200).json(response)

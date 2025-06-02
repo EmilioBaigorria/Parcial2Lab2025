@@ -7,11 +7,7 @@ export const getAllDireccion = async (req: Request, res: Response) => {
     try {
         const response = await prisma.direccion.findMany({
             include: {
-                usuarios: {
-                    select: {
-                        id: true
-                    }
-                }
+                usuarios: true
             }
         })
         res.status(200).json(response)
@@ -27,11 +23,7 @@ export const getDireccionPorId = async (req: Request, res: Response) => {
         const response = await prisma.direccion.findUnique({
             where: { id: direcId },
             include: {
-                usuarios: {
-                    select: {
-                        id: true
-                    }
-                }
+                usuarios: true
             }
         })
         res.status(200).json(response)
