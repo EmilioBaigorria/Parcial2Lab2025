@@ -86,8 +86,9 @@ export const eliminarDireccionPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const DirecId = parseInt(id, 10)
-        const response = await prisma.direccion.delete({
+        const response = await prisma.direccion.update({
             where: { id: DirecId },
+            data: { estadoM: "INACTIVO" }
         })
         res.status(200).json(response)
     } catch (error) {

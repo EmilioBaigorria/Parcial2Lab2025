@@ -139,12 +139,13 @@ export const actualizarProducto = async (req: Request, res: Response) => {
     }
 };
 
-export const eliminarProductoPorId = async (req: Request, res: Response) => { //--not tested
+export const eliminarProductoPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const produId = parseInt(id, 10)
-        const response = await prisma.producto.delete({
+        const response = await prisma.producto.update({
             where: { id: produId },
+            data: { estadoM: "INACTIVO" }
         })
         res.status(200).json(response)
     } catch (error) {

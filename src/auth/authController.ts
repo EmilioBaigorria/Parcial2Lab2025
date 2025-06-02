@@ -32,7 +32,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
     try {
         const user = await prisma.usuario.findUnique({ where: { email } });
-        if (user?.estado == "INACTIVO") {
+        if (user?.estadoM == "INACTIVO") {
             res.status(401).json({ msg: "El usuario proporcionado esta inactivo" });
             return;
         }

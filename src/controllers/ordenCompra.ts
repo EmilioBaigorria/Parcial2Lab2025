@@ -104,8 +104,9 @@ export const eliminarOrdenCompraPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const OCId = parseInt(id, 10)
-        const response = await prisma.ordenCompra.delete({
+        const response = await prisma.ordenCompra.update({
             where: { id: OCId },
+            data: { estadoM: "INACTIVO" }
         })
         res.status(200).json(response)
     } catch (error) {

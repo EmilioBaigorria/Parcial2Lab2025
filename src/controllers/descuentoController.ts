@@ -92,8 +92,9 @@ export const eliminarDescuento = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const descId = parseInt(id, 10)
-        const response = await prisma.descuento.delete({
+        const response = await prisma.descuento.update({
             where: { id: descId },
+            data: { estadoM: "INACTIVO" }
         })
         res.status(200).json(response)
     } catch (error) {

@@ -123,12 +123,13 @@ export const actualizarPedido = async (req: Request, res: Response) => {
         }
     }
 };
-export const eliminarPedidoPorId = async (req: Request, res: Response) => { //--not tested
+export const eliminarPedidoPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const pediId = parseInt(id, 10)
-        const response = await prisma.pedido.delete({
+        const response = await prisma.pedido.update({
             where: { id: pediId },
+            data: { estadoM: "INACTIVO" }
         })
         res.status(200).json(response)
     } catch (error) {

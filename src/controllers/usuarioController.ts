@@ -109,7 +109,7 @@ export const eliminarUsuarioPorId = async (req: Request, res: Response) => {
         const usuarioId = parseInt(id, 10)
         const response = await prisma.usuario.update({
             where: { id: usuarioId },
-            data: { estado: "INACTIVO" }
+            data: { estadoM: "INACTIVO" }
         })
         res.status(200).json(response)
     } catch (error) {

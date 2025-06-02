@@ -88,8 +88,9 @@ export const eliminarTallePorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const talleId = parseInt(id, 10)
-        const response = await prisma.talle.delete({
+        const response = await prisma.talle.update({
             where: { id: talleId },
+            data: { estadoM: "INACTIVO" }
         })
         res.status(200).json(response)
     } catch (error) {

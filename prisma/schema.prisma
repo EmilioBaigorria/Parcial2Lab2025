@@ -26,6 +26,7 @@ model Categoria {
   id        Int        @id @default(autoincrement())
   nombre    String
   productos Producto[] @relation("ProductoCategorias")
+  estadoM   ModelState @default(ACTIVO)
 }
 
 model Descuento {
@@ -34,6 +35,7 @@ model Descuento {
   fechaCierre  DateTime
   descuento    Float
   productos    Producto[]
+  estadoM      ModelState @default(ACTIVO)
 }
 
 model DetalleOrden {
@@ -44,6 +46,7 @@ model DetalleOrden {
   productoId     Int
   ordenCompra    OrdenCompra? @relation(fields: [ordenCompraId], references: [id], onDelete: Cascade)
   ordenCompraId  Int?
+  estadoM        ModelState   @default(ACTIVO)
 }
 
 model Direccion {
@@ -51,6 +54,7 @@ model Direccion {
   calle     String
   codpost   Int
   usuarios  Usuario[]  @relation("UsuarioDirecciones")
+  estadoM   ModelState @default(ACTIVO)
 }
 
 model OrdenCompra {
@@ -61,6 +65,7 @@ model OrdenCompra {
   detalles     DetalleOrden[]
   pedido       Pedido?        @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
   pedidoId     Int?           @unique
+  estadoM      ModelState     @default(ACTIVO)
 }
 
 model Pedido {
@@ -71,15 +76,17 @@ model Pedido {
   usuario        Usuario       @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
   usuarioId      Int
   ordenCompra    OrdenCompra?
+  estadoM        ModelState    @default(ACTIVO)
 }
 
 model PedidoItem {
-  id          Int       @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   cantidad    Int
-  producto    Producto  @relation(fields: [productoId], references: [id], onDelete: Cascade)
+  producto    Producto    @relation(fields: [productoId], references: [id], onDelete: Cascade)
   productoId  Int
-  pedido      Pedido?   @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+  pedido      Pedido?     @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
   pedidoId    Int?
+  estadoM     ModelState  @default(ACTIVO)
 }
 
 model Producto {
@@ -97,6 +104,7 @@ model Producto {
   pedidoItems  PedidoItem[]
   detalleOrden DetalleOrden[] 
   talles       Talle[]        @relation("ProductoTalles")
+  estadoM      ModelState     @default(ACTIVO)
 }
 
 
@@ -104,6 +112,7 @@ model Talle {
   id         Int         @id @default(autoincrement())
   talle      String      @unique
   productos  Producto[]  @relation("ProductoTalles")
+  estadoM    ModelState  @default(ACTIVO)
 }
 
 model Usuario {
@@ -113,9 +122,9 @@ model Usuario {
   email        String      @unique
   password     String
   rol          Rol         @default(USER)
-  estado       UserState   @default(ACTIVO)
   direcciones  Direccion[] @relation("UsuarioDirecciones")
   pedidos      Pedido[]
+  estadoM      ModelState  @default(ACTIVO)
 }
 
 // Enums
@@ -124,7 +133,8 @@ enum Rol {
   ADMIN
   USER
 }
-enum UserState{
+
+enum ModelState {
   ACTIVO
   INACTIVO
 }

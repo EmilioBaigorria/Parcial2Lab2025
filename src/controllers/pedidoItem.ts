@@ -92,8 +92,9 @@ export const eliminarPedidoItemPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const pediItemId = parseInt(id, 10)
-        const response = await prisma.pedidoItem.delete({
+        const response = await prisma.pedidoItem.update({
             where: { id: pediItemId },
+            data: { estadoM: "INACTIVO" }
         })
         res.status(200).json(response)
     } catch (error) {

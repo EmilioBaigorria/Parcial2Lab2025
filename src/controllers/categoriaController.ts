@@ -89,8 +89,9 @@ export const eliminarCategoriaPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const cateid = parseInt(id, 10)
-        const response = await prisma.categoria.delete({
-            where: { id: cateid }
+        const response = await prisma.categoria.update({
+            where: { id: cateid },
+            data: { estadoM: "INACTIVO" }
         })
         res.status(200).json(response)
     } catch (error) {
