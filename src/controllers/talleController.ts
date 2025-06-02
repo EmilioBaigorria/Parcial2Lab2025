@@ -51,22 +51,39 @@ export const crearTalle = async (req: Request, res: Response) => {
 }
 export const actualizarTalle = async (req: Request, res: Response) => {
     try {
-        const { id, talle, productos } = req.body
-        const response = await prisma.talle.update({
-            where: { id: id },
-            data: {
-                talle: talle,
+        const { id, talle, productos } = req.body;
+
+        if (!id) {
+            return res.status(400).json({ message: "El ID es requerido" });
+        }
+
+        const data = {
+            ...(talle && { talle }),
+            ...(productos && {
                 productos: {
                     connect: productos.map((id: number) => ({ id }))
                 }
+            })
+        };
+
+        const response = await prisma.talle.update({
+            where: { id: Number(id) },
+            data,
+            include: {
+                productos: true
             }
-        })
-        res.status(200).json(response)
+        });
+
+        res.status(200).json(response);
     } catch (error) {
-        console.log("Ocurrio un error durante la actualizacion de un direccion: ", error)
-        res.status(500).json({ message: "Ocurrio un error durante la actualizacion de un direccion" })
+        console.error("Ocurrió un error durante la actualización de un talle: ", error);
+        res.status(500).json({
+            message: "Ocurrió un error durante la actualización de un talle",
+            error
+        });
     }
-}
+};
+
 export const eliminarTallePorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params

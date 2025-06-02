@@ -52,22 +52,39 @@ export const crearCategoria = async (req: Request, res: Response) => {
 }
 export const actualizarCategoria = async (req: Request, res: Response) => {
     try {
-        const { id, nombre, productos } = req.body
-        const response = await prisma.categoria.update({
-            where: { id: id },
-            data: {
-                nombre: nombre,
+        const { id, nombre, productos } = req.body;
+
+        if (!id) {
+            return res.status(400).json({ message: "El ID es requerido" });
+        }
+
+        const data: any = {
+            ...(nombre && { nombre }),
+            ...(productos && {
                 productos: {
                     connect: productos.map((id: number) => ({ id }))
                 }
+            })
+        };
+
+        const response = await prisma.categoria.update({
+            where: { id: Number(id) },
+            data,
+            include: {
+                productos: true
             }
-        })
-        res.status(201).json(response)
+        });
+
+        res.status(200).json(response);
     } catch (error) {
-        console.log("Ocurrio un error durante la actualizacion de una categoria: ", error)
-        res.status(500).json({ message: "Ocurrio un error durante la actualizacion de una categoria" })
+        console.error("Ocurrió un error durante la actualización de una categoría:", error);
+        res.status(500).json({
+            message: "Ocurrió un error durante la actualización de una categoría",
+            error
+        });
     }
-}
+};
+
 export const eliminarCategoriaPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params

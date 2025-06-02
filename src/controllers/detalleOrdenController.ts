@@ -57,26 +57,46 @@ export const crearDetalleOrden = async (req: Request, res: Response) => {
 }
 export const actualizarDetalleOrden = async (req: Request, res: Response) => {
     try {
-        const { id, cantidad, precioUnitario, productoId, ordenCompraId } = req.body
-        const response = await prisma.detalleOrden.update({
-            where: { id: id },
-            data: {
-                cantidad: cantidad,
-                precioUnitario: precioUnitario,
+        const { id, cantidad, precioUnitario, productoId, ordenCompraId } = req.body;
+
+        if (!id) {
+            return res.status(400).json({ message: "El ID es requerido" });
+        }
+
+        const data: any = {
+            ...(cantidad && { cantidad }),
+            ...(precioUnitario && { precioUnitario }),
+            ...(productoId && {
                 producto: {
                     connect: { id: productoId }
-                },
+                }
+            }),
+            ...(ordenCompraId && {
                 ordenCompra: {
                     connect: { id: ordenCompraId }
                 }
+            })
+        };
+
+        const response = await prisma.detalleOrden.update({
+            where: { id: Number(id) },
+            data,
+            include: {
+                producto: true,
+                ordenCompra: true
             }
-        })
-        res.status(200).json(response)
+        });
+
+        res.status(200).json(response);
     } catch (error) {
-        console.log("Ocurrio un error durante la actualizacion de un detalleOrden: ", error)
-        res.status(500).json({ message: "Ocurrio un error actualizacion la creacion de un detalleOrden" })
+        console.error("Ocurrió un error durante la actualización de un detalle de orden:", error);
+        res.status(500).json({
+            message: "Ocurrió un error durante la actualización de un detalle de orden",
+            error
+        });
     }
-}
+};
+
 export const eliminarDetalleOrdenPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params

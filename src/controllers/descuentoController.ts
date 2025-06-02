@@ -53,24 +53,41 @@ export const crearDescuento = async (req: Request, res: Response) => {
 }
 export const actualizarDescuento = async (req: Request, res: Response) => {
     try {
-        const { id, fechaInicio, fechaCierre, descuento, productos } = req.body
-        const response = await prisma.descuento.update({
-            where: { id: id },
-            data: {
-                fechaInicio: fechaInicio,
-                fechaCierre: fechaCierre,
-                descuento: descuento,
+        const { id, fechaInicio, fechaCierre, descuento, productos } = req.body;
+
+        if (!id) {
+            return res.status(400).json({ message: "El ID es requerido" });
+        }
+
+        const data: any = {
+            ...(fechaInicio && { fechaInicio }),
+            ...(fechaCierre && { fechaCierre }),
+            ...(descuento && { descuento }),
+            ...(productos && {
                 productos: {
                     connect: productos.map((id: number) => ({ id }))
                 }
+            })
+        };
+
+        const response = await prisma.descuento.update({
+            where: { id: Number(id) },
+            data,
+            include: {
+                productos: true
             }
-        })
-        res.status(200).json(response)
+        });
+
+        res.status(200).json(response);
     } catch (error) {
-        console.log("Ocurrio un error durante la actualizacion de un descuento: ", error)
-        res.status(500).json({ message: "Ocurrio un error actualizacion la creacion de un descuento" })
+        console.error("Ocurrió un error durante la actualización de un descuento:", error);
+        res.status(500).json({
+            message: "Ocurrió un error durante la actualización de un descuento",
+            error
+        });
     }
-}
+};
+
 export const eliminarDescuento = async (req: Request, res: Response) => {
     try {
         const { id } = req.params

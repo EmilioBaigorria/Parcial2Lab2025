@@ -81,6 +81,10 @@ export const actualizarPedido = async (req: Request, res: Response) => {
     try {
         const { id, estado, fechacreacion, items, usuarioId, ordenCompra } = req.body;
 
+        if (!id) {
+            return res.status(400).json({ message: "El ID es requerido" });
+        }
+
         const data = {
             ...(estado && { estado }),
             ...(fechacreacion && { fechacreacion: new Date(fechacreacion) }),

@@ -56,21 +56,38 @@ export const crearPedidoItem = async (req: Request, res: Response) => {
 };
 export const actualizarPedidoItem = async (req: Request, res: Response) => {
     try {
-        const { id, cantidad, productoId, pedidoId } = req.body
+        const { id, cantidad, productoId, pedidoId } = req.body;
+
+        if (!id) {
+            return res.status(400).json({ message: "El ID es requerido" });
+        }
+
+        const data = {
+            ...(cantidad && { cantidad }),
+            ...(productoId && { productoId }),
+            ...(pedidoId && { pedidoId })
+        };
+
         const response = await prisma.pedidoItem.update({
-            where: { id: id },
-            data: {
-                cantidad: cantidad,
-                productoId: productoId,
-                pedidoId: pedidoId
+            where: { id: Number(id) },
+            data,
+            include: {
+                producto: true,
+                pedido: true
             }
-        })
-        res.status(200).json(response)
+        });
+
+        res.status(200).json(response);
+
     } catch (error) {
-        console.log("Ocurrio un error durante la actualizacion de un pedidoItem: ", error)
-        res.status(500).json({ message: "Ocurrio un error durante la actualizacion de un pedidoItem" })
+        console.error("Ocurrió un error durante la actualización de un pedidoItem: ", error);
+        res.status(500).json({
+            message: "Ocurrió un error durante la actualización de un pedidoItem",
+            error
+        });
     }
-}
+};
+
 export const eliminarPedidoItemPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params

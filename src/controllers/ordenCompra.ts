@@ -63,24 +63,43 @@ export const crearOrdenCompra = async (req: Request, res: Response) => {
 };
 export const actualizarOrdenCompra = async (req: Request, res: Response) => {
     try {
-        const { id, montototal, mediopago, detalles, pedidoId } = req.body
-        const response = await prisma.ordenCompra.update({
-            where: { id: id },
-            data: {
-                montototal: montototal,
-                mediopago: "MercadoPago",
+        const { id, montototal, mediopago, detalles, pedidoId } = req.body;
+
+        if (!id) {
+            return res.status(400).json({ message: "El ID es requerido" });
+        }
+
+        const data = {
+            ...(montototal && { montototal }),
+            ...(mediopago && { mediopago }),
+            ...(detalles && {
                 detalles: {
                     connect: detalles.map((id: number) => ({ id }))
-                },
-                pedidoId: pedidoId
+                }
+            }),
+            ...(pedidoId && { pedidoId })
+        };
+
+        const response = await prisma.ordenCompra.update({
+            where: { id: Number(id) },
+            data,
+            include: {
+                detalles: true,
+                pedido: true
             }
-        })
-        res.status(200).json(response)
+        });
+
+        res.status(200).json(response);
+
     } catch (error) {
-        console.log("Ocurrio un error durante la actualizacion de una orden de compra: ", error)
-        res.status(500).json({ message: "Ocurrio un error durante la actualizacion de una orden de compra" })
+        console.error("Ocurrió un error durante la actualización de una orden de compra: ", error);
+        res.status(500).json({
+            message: "Ocurrió un error durante la actualización de una orden de compra",
+            error
+        });
     }
-}
+};
+
 export const eliminarOrdenCompraPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params

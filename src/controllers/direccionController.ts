@@ -52,23 +52,36 @@ export const crearDireccion = async (req: Request, res: Response) => {
 }
 export const actualizarDireccion = async (req: Request, res: Response) => {
     try {
-        const { id, calle, codpost, usuarios } = req.body
-        const response = await prisma.direccion.update({
-            where: { id: id },
-            data: {
-                calle: calle,
-                codpost: codpost,
-                usuarios: {
-                    connect: usuarios.map((id: number) => ({ id }))
+        const { id, calle, codpost, usuarios } = req.body;
+
+        if (!id) {
+            return res.status(400).json({ message: "El ID es requerido" });
+        }
+
+        const data = {
+            ...(calle && { calle }),
+            ...(codpost && { codpost }),
+            ...(usuarios && { 
+                usuarios: { 
+                    connect: usuarios.map((id: number) => ({ id })) 
                 }
-            }
-        })
-        res.status(200).json(response)
+            })
+        };
+
+        const response = await prisma.direccion.update({
+            where: { id: Number(id) },
+            data
+        });
+
+        res.status(200).json(response);
     } catch (error) {
-        console.log("Ocurrio un error durante la actualizacion de un direccion: ", error)
-        res.status(500).json({ message: "Ocurrio un error durante la actualizacion de un direccion" })
+        console.error(error);
+        res.status(500).json({ 
+            message: "Error al actualizar dirección",
+            error: error 
+        });
     }
-}
+};
 export const eliminarDireccionPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
