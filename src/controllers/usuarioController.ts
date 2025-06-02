@@ -3,7 +3,7 @@ import { PrismaClient } from "../generated/prisma";
 
 const prisma = new PrismaClient
 
-export const getAllUsuarios = async (req: Request, res: Response) => { //--not tested
+export const getAllUsuarios = async (req: Request, res: Response) => {
     try {
         const response = await prisma.usuario.findMany()
         res.status(200).json(response)
@@ -12,7 +12,7 @@ export const getAllUsuarios = async (req: Request, res: Response) => { //--not t
         res.status(500).json({ message: "Ocurrio un error durante la obtencion de todos los usuarios" })
     }
 }
-export const getUsuarioPorId = async (req: Request, res: Response) => { //--not tested
+export const getUsuarioPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const usuarioId = parseInt(id, 10)
@@ -25,7 +25,7 @@ export const getUsuarioPorId = async (req: Request, res: Response) => { //--not 
         res.status(500).json({ message: "Ocurrio un error durante la obtencion de un usuario" })
     }
 }
-export const crearUsuario = async (req: Request, res: Response) => { //--not tested
+export const crearUsuario = async (req: Request, res: Response) => {
     try {
         const { nombre, apellido, email, password, rol, direcciones, pedidos } = req.body
         const response = await prisma.usuario.create({
@@ -49,7 +49,7 @@ export const crearUsuario = async (req: Request, res: Response) => { //--not tes
         res.status(500).json({ message: "Ocurrio un error durante la creacion de un usuario" })
     }
 }
-export const actualizarUsuario = async (req: Request, res: Response) => { //--not tested
+export const actualizarUsuario = async (req: Request, res: Response) => {
     try {
         const { id, nombre, apellido, email, password, rol, direcciones, pedidos } = req.body
         const response = await prisma.usuario.update({
@@ -74,7 +74,7 @@ export const actualizarUsuario = async (req: Request, res: Response) => { //--no
         res.status(500).json({ message: "Ocurrio un error durante la actualizacion de un usuario" })
     }
 }
-export const eliminarUsuarioPorId = async (req: Request, res: Response) => { //--not tested
+export const eliminarUsuarioPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const usuarioId = parseInt(id, 10)

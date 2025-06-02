@@ -70,7 +70,7 @@ export const actualizarDireccion = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Ocurrio un error durante la actualizacion de un direccion" })
     }
 }
-export const eliminarDireccionPorId = async (req: Request, res: Response) => { //--not tested
+export const eliminarDireccionPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const DirecId = parseInt(id, 10)

@@ -3,7 +3,7 @@ import { PrismaClient } from "../generated/prisma";
 
 const prisma = new PrismaClient
 
-export const getAllTalle = async (req: Request, res: Response) => { //--not tested
+export const getAllTalle = async (req: Request, res: Response) => {
     try {
         const response = await prisma.talle.findMany()
         res.status(200).json(response)
@@ -12,7 +12,7 @@ export const getAllTalle = async (req: Request, res: Response) => { //--not test
         res.status(500).json({ message: "Ocurrio un error durante la obtencion de todos los talles" })
     }
 }
-export const getTallePorId = async (req: Request, res: Response) => { //--not tested
+export const getTallePorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const talleId = parseInt(id, 10)
@@ -25,7 +25,7 @@ export const getTallePorId = async (req: Request, res: Response) => { //--not te
         res.status(500).json({ message: "Ocurrio un error durante la obtencion de un talle" })
     }
 }
-export const crearTalle = async (req: Request, res: Response) => { //--not tested
+export const crearTalle = async (req: Request, res: Response) => {
     try {
         const { talle, productos } = req.body
         const response = await prisma.talle.create({
@@ -42,7 +42,7 @@ export const crearTalle = async (req: Request, res: Response) => { //--not teste
         res.status(500).json({ message: "Ocurrio un error durante la creacion de un talle" })
     }
 }
-export const actualizarTalle = async (req: Request, res: Response) => { //--not tested
+export const actualizarTalle = async (req: Request, res: Response) => {
     try {
         const { id, talle, productos } = req.body
         const response = await prisma.talle.update({
@@ -60,7 +60,7 @@ export const actualizarTalle = async (req: Request, res: Response) => { //--not 
         res.status(500).json({ message: "Ocurrio un error durante la actualizacion de un direccion" })
     }
 }
-export const eliminarTallePorId = async (req: Request, res: Response) => { //--not tested
+export const eliminarTallePorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const talleId = parseInt(id, 10)

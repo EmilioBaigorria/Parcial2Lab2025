@@ -3,7 +3,7 @@ import { PrismaClient } from "../generated/prisma";
 
 const prisma = new PrismaClient
 
-export const getAllOrdenCompra = async (req: Request, res: Response) => { //--not tested
+export const getAllOrdenCompra = async (req: Request, res: Response) => {
     try {
         const response = await prisma.ordenCompra.findMany()
         res.status(200).json(response)
@@ -12,7 +12,7 @@ export const getAllOrdenCompra = async (req: Request, res: Response) => { //--no
         res.status(500).json({ message: "Ocurrio un error durante la obtencion de todas las Ordenes de compra" })
     }
 }
-export const getOrdenCompraPorId = async (req: Request, res: Response) => { //--not tested
+export const getOrdenCompraPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const OCId = parseInt(id, 10)
@@ -54,7 +54,7 @@ export const crearOrdenCompra = async (req: Request, res: Response) => {
         });
     }
 };
-export const actualizarOrdenCompra = async (req: Request, res: Response) => { //--not tested
+export const actualizarOrdenCompra = async (req: Request, res: Response) => {
     try {
         const { id, montototal, mediopago, detalles, pedidoId } = req.body
         const response = await prisma.ordenCompra.update({
@@ -74,7 +74,7 @@ export const actualizarOrdenCompra = async (req: Request, res: Response) => { //
         res.status(500).json({ message: "Ocurrio un error durante la actualizacion de una orden de compra" })
     }
 }
-export const eliminarOrdenCompraPorId = async (req: Request, res: Response) => { //--not tested
+export const eliminarOrdenCompraPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const OCId = parseInt(id, 10)

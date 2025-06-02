@@ -3,7 +3,7 @@ import { PrismaClient } from "../generated/prisma";
 
 const prisma = new PrismaClient
 
-export const getAllPedidos = async (req: Request, res: Response) => { //--not tested
+export const getAllPedidos = async (req: Request, res: Response) => {
     try {
         const response = await prisma.pedido.findMany()
         res.status(200).json(response)
@@ -12,7 +12,7 @@ export const getAllPedidos = async (req: Request, res: Response) => { //--not te
         res.status(500).json({ message: "Ocurrio un error durante la obtencion de todos los pedidos" })
     }
 }
-export const getPedidoPorId = async (req: Request, res: Response) => { //--not tested
+export const getPedidoPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const pediId = parseInt(id, 10)
@@ -54,16 +54,16 @@ export const crearPedido = async (req: Request, res: Response) => {
 
     } catch (error) {
         console.error(error);
-        
+
         if (error === 'P2025') {
-            res.status(404).json({ 
+            res.status(404).json({
                 message: "Uno de los IDs proporcionados no existe",
-                details: error 
+                details: error
             });
         } else {
-            res.status(500).json({ 
+            res.status(500).json({
                 message: "Error al crear pedido",
-                error: error 
+                error: error
             });
         }
     }
@@ -77,8 +77,8 @@ export const actualizarPedido = async (req: Request, res: Response) => {
             ...(fechacreacion && { fechacreacion: new Date(fechacreacion) }),
             ...(items && { items: { connect: items.map((id: number) => ({ id })) } }),
             ...(usuarioId && { usuario: { connect: { id: usuarioId } } }),
-            ...(ordenCompra !== undefined ? { 
-                ordenCompra: ordenCompra ? { connect: { id: ordenCompra } } : { disconnect: true } 
+            ...(ordenCompra !== undefined ? {
+                ordenCompra: ordenCompra ? { connect: { id: ordenCompra } } : { disconnect: true }
             } : {})
         };
 
@@ -96,16 +96,16 @@ export const actualizarPedido = async (req: Request, res: Response) => {
 
     } catch (error) {
         console.error(error);
-        
+
         if (error === 'P2025') {
-            res.status(404).json({ 
+            res.status(404).json({
                 message: "ID no encontrado",
-                details: error 
+                details: error
             });
         } else {
-            res.status(500).json({ 
+            res.status(500).json({
                 message: "Error al actualizar pedido",
-                error: error 
+                error: error
             });
         }
     }

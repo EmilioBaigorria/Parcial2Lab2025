@@ -68,7 +68,7 @@ export const actualizarDetalleOrden = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Ocurrio un error actualizacion la creacion de un detalleOrden" })
     }
 }
-export const eliminarDetalleOrdenPorId = async (req: Request, res: Response) => { //--not tested
+export const eliminarDetalleOrdenPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const DOId = parseInt(id, 10)

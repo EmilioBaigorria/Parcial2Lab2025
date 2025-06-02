@@ -3,7 +3,7 @@ import { PrismaClient } from "../generated/prisma";
 
 const prisma = new PrismaClient
 
-export const getAllPedidoItem = async (req: Request, res: Response) => { //--not tested
+export const getAllPedidoItem = async (req: Request, res: Response) => {
     try {
         const response = await prisma.pedidoItem.findMany()
         res.status(200).json(response)
@@ -12,7 +12,7 @@ export const getAllPedidoItem = async (req: Request, res: Response) => { //--not
         res.status(500).json({ message: "Ocurrio un error durante la obtencion de todos los pedidoItem" })
     }
 }
-export const getPedidoItemPorId = async (req: Request, res: Response) => { //--not tested
+export const getPedidoItemPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const pediItemId = parseInt(id, 10)
@@ -39,13 +39,13 @@ export const crearPedidoItem = async (req: Request, res: Response) => {
         res.status(201).json(response);
 
     } catch (error) {
-        res.status(500).json({ 
+        res.status(500).json({
             message: "Error al crear pedidoItem",
             error: error
         });
     }
 };
-export const actualizarPedidoItem = async (req: Request, res: Response) => { //--not tested
+export const actualizarPedidoItem = async (req: Request, res: Response) => {
     try {
         const { id, cantidad, productoId, pedidoId } = req.body
         const response = await prisma.pedidoItem.update({
@@ -62,7 +62,7 @@ export const actualizarPedidoItem = async (req: Request, res: Response) => { //-
         res.status(500).json({ message: "Ocurrio un error durante la actualizacion de un pedidoItem" })
     }
 }
-export const eliminarPedidoItemPorId = async (req: Request, res: Response) => { //--not tested
+export const eliminarPedidoItemPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const pediItemId = parseInt(id, 10)
