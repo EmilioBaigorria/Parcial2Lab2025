@@ -59,7 +59,8 @@ export const actualizarPedidoItem = async (req: Request, res: Response) => {
         const { id, cantidad, productoId, pedidoId } = req.body;
 
         if (!id) {
-            return res.status(400).json({ message: "El ID es requerido" });
+            res.status(400).json({ message: "El ID es requerido" });
+            return 
         }
 
         const data = {

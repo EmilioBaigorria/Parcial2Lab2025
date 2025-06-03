@@ -17,7 +17,7 @@ export const getAllCategorias = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Ocurrio un error durante la obtencion de todas las categorias" })
     }
 }
-export const getCategoriaPorId = async (req: Request, res: Response) => {
+export const getCategoriaPorId = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params
         const cateid = parseInt(id, 10)
@@ -33,7 +33,7 @@ export const getCategoriaPorId = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Ocurrio un error durante la obtencion de una de las categorias" })
     }
 }
-export const crearCategoria = async (req: Request, res: Response) => {
+export const crearCategoria = async (req: Request, res: Response): Promise<void> => {
     try {
         const { nombre, productos } = req.body
         const response = await prisma.categoria.create({
@@ -50,12 +50,13 @@ export const crearCategoria = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Ocurrio un error durante la creacion de una categoria" })
     }
 }
-export const actualizarCategoria = async (req: Request, res: Response) => {
+export const actualizarCategoria = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id, nombre, productos } = req.body;
 
         if (!id) {
-            return res.status(400).json({ message: "El ID es requerido" });
+            res.status(400).json({ message: "El ID es requerido" });
+            return
         }
 
         const data: any = {
@@ -85,7 +86,7 @@ export const actualizarCategoria = async (req: Request, res: Response) => {
     }
 };
 
-export const eliminarCategoriaPorId = async (req: Request, res: Response) => {
+export const eliminarCategoriaPorId = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params
         const cateid = parseInt(id, 10)

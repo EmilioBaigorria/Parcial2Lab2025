@@ -60,7 +60,8 @@ export const actualizarDetalleOrden = async (req: Request, res: Response) => {
         const { id, cantidad, precioUnitario, productoId, ordenCompraId } = req.body;
 
         if (!id) {
-            return res.status(400).json({ message: "El ID es requerido" });
+            res.status(400).json({ message: "El ID es requerido" });
+            return 
         }
 
         const data: any = {
@@ -97,7 +98,7 @@ export const actualizarDetalleOrden = async (req: Request, res: Response) => {
     }
 };
 
-export const eliminarDetalleOrdenPorId = async (req: Request, res: Response) => {
+export const eliminarDetalleOrdenPorId = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params
         const DOId = parseInt(id, 10)

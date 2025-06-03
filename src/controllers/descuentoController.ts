@@ -56,7 +56,8 @@ export const actualizarDescuento = async (req: Request, res: Response) => {
         const { id, fechaInicio, fechaCierre, descuento, productos } = req.body;
 
         if (!id) {
-            return res.status(400).json({ message: "El ID es requerido" });
+            res.status(400).json({ message: "El ID es requerido" });
+            return
         }
 
         const data: any = {
@@ -88,7 +89,7 @@ export const actualizarDescuento = async (req: Request, res: Response) => {
     }
 };
 
-export const eliminarDescuento = async (req: Request, res: Response) => {
+export const eliminarDescuento = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params
         const descId = parseInt(id, 10)
